@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Item from "./Item";
 import OrderModal from "./OrderModal";
+import { MenuContext } from "../context/menuContext";
 
-function Menu({ menu, cart, setCart }) {
+function Menu() {
   const [modalOn, setModalOn] = useState(false);
   const [modalMenu, setModalMenu] = useState(null);
+  const { menu } = useContext(MenuContext);
+
   if (!menu)
     return (
       <div style={{ textAlign: "center", margin: "80px" }}>
@@ -22,7 +25,7 @@ function Menu({ menu, cart, setCart }) {
             <ul className="menu">
               {menu[category].map((item) => (
                 <Item
-                  key={item.name}
+                  key={item.id}
                   item={item}
                   clickHandler={() => {
                     setModalMenu(item);
@@ -35,12 +38,7 @@ function Menu({ menu, cart, setCart }) {
         );
       })}
       {modalOn ? (
-        <OrderModal
-          modalMenu={modalMenu}
-          setModalOn={setModalOn}
-          cart={cart}
-          setCart={setCart}
-        />
+        <OrderModal modalMenu={modalMenu} setModalOn={setModalOn} />
       ) : null}
     </>
   );
